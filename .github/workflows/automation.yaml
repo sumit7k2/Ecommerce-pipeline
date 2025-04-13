@@ -1,0 +1,28 @@
+name: ecommerce-app
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  heath-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Setup docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login into docker hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_PASSWORD}}
+
+      - name: Build + push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: sumit7k2/ecommerce-pipeline:latest
